@@ -59,7 +59,7 @@
 		// "eco_green" = ECO GREEN COLOR SCHEME
 		// "colors_coated_grey" = COATED GREY COLOR SCHEME
 
-		var config_color_scheme = "warning_yellow";
+		var config_color_scheme = "sweet_purple";
 
 
 
@@ -136,7 +136,7 @@
 		// "waves" = IMAGE EFFECT WAVES
 		// "custom" = IMAGE EFFECT CUSTOM
 
-		var config_profile_image_effect = "tech";
+		var config_profile_image_effect = "custom";
 
 
 
@@ -146,7 +146,7 @@
 
 
 		// PROFILE PICTURE HOVER EFFECT MAP INTENSITY
-		var config_profile_image_effect_intensity = 0.3;
+		var config_profile_image_effect_intensity = 0.0;
 
 
 
@@ -318,7 +318,7 @@
 
 
 				// LINE COLOR
-				var option_hero_background_twisted_line_color = "#FFA500";
+				var option_hero_background_twisted_line_color = "#BF40BF";
 
 
 
