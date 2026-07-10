@@ -1,0 +1,14 @@
+# Dead files from earlier multi-file version — superseded by inline index.html
+style.css
+script.js
+
+# Color palette reference — 5.3MB, not part of the site
+reference.html
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+*.swp
+*.swo

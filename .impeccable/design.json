@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-30T00:00:00Z",
+  "title": "Design System: Davide Scognamiglio Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Instrument Teal",
+        "canonical": "oklch(37% 0.13 185)",
+        "tonalRamp": [
+          "oklch(12% 0.13 185)",
+          "oklch(22% 0.13 185)",
+          "oklch(37% 0.13 185)",
+          "oklch(48% 0.11 185)",
+          "oklch(58% 0.10 185)",
+          "oklch(68% 0.08 185)",
+          "oklch(78% 0.06 185)",
+          "oklch(91% 0.03 185)"
+        ]
+      },
+      "bg": {
+        "role": "neutral",
+        "displayName": "Warm Vellum",
+        "canonical": "oklch(97.5% 0.007 80)",
+        "tonalRamp": [
+          "oklch(12% 0.009 80)",
+          "oklch(22% 0.009 80)",
+          "oklch(38% 0.009 80)",
+          "oklch(55% 0.008 80)",
+          "oklch(70% 0.008 80)",
+          "oklch(82% 0.008 80)",
+          "oklch(91% 0.008 80)",
+          "oklch(97.5% 0.007 80)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Near-Black Ink",
+        "canonical": "oklch(12% 0.009 80)",
+        "tonalRamp": [
+          "oklch(7% 0.009 80)",
+          "oklch(12% 0.009 80)",
+          "oklch(22% 0.009 80)",
+          "oklch(35% 0.009 80)",
+          "oklch(48% 0.008 80)",
+          "oklch(62% 0.007 80)",
+          "oklch(78% 0.007 80)",
+          "oklch(93% 0.005 80)"
+        ]
+      },
+      "bg-raised": {
+        "role": "neutral",
+        "displayName": "Raised Surface",
+        "canonical": "oklch(95.5% 0.009 80)",
+        "tonalRamp": [
+          "oklch(15% 0.009 80)",
+          "oklch(28% 0.009 80)",
+          "oklch(42% 0.009 80)",
+          "oklch(58% 0.009 80)",
+          "oklch(72% 0.009 80)",
+          "oklch(84% 0.009 80)",
+          "oklch(91% 0.009 80)",
+          "oklch(95.5% 0.009 80)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Primary Line",
+        "canonical": "oklch(88% 0.007 75)",
+        "tonalRamp": [
+          "oklch(20% 0.007 75)",
+          "oklch(35% 0.007 75)",
+          "oklch(50% 0.007 75)",
+          "oklch(62% 0.007 75)",
+          "oklch(72% 0.007 75)",
+          "oklch(80% 0.007 75)",
+          "oklch(88% 0.007 75)",
+          "oklch(95% 0.005 75)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headline only. One per page." },
+      "headline": { "displayName": "Headline", "purpose": "Section h2 headings. Often uses italic em qualifier." },
+      "body": { "displayName": "Body", "purpose": "Prose sections. Max 64ch line length." },
+      "label": { "displayName": "Label (Mono)", "purpose": "Data-derived metadata only: years, language tags, chip text." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Default entrance easing (--ease-out). All fadeUp reveals, drawer open, scroll cue." },
+      { "name": "ease-standard", "value": "cubic-bezier(0.25, 0.46, 0.45, 0.94)", "purpose": "Default state-change transitions (--ease). Button hover, theme switch." },
+      { "name": "shimmer-cycle", "value": "1.4s linear infinite", "purpose": "Loading skeleton shimmer cycle time." },
+      { "name": "hero-parallax", "value": "scroll-driven, linear, 0px–140svh", "purpose": "CSS scroll-driven parallax on hero video (Chrome/Edge/Safari 16+ only, @supports guarded)." }
+    ],
+    "breakpoints": [
+      { "name": "md", "value": "768px", "purpose": "Mobile nav, single-column layouts, reduced hero padding." },
+      { "name": "lg", "value": "960px", "purpose": "About grid, contact grid, research grid switch to single column." },
+      { "name": "xl", "value": "1400px", "purpose": "--wrap expands to 1200px." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button (Solid)",
+      "kind": "button",
+      "refersTo": "button-solid",
+      "description": "Primary CTA. Near-black fill, warm-white text. Hover drops opacity; press scales down.",
+      "html": "<button class=\"ds-btn-solid\">See my work</button>",
+      "css": ".ds-btn-solid { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1.1rem; border-radius: 10px; font-size: 0.8125rem; font-weight: 500; letter-spacing: -0.005em; border: 1px solid oklch(12% 0.009 80); cursor: pointer; white-space: nowrap; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; background: oklch(12% 0.009 80); color: oklch(97.5% 0.007 80); transition: opacity 0.15s; } .ds-btn-solid:hover { opacity: 0.85; } .ds-btn-solid:active { transform: scale(0.98); } .ds-btn-solid:focus-visible { outline: 2px solid oklch(37% 0.13 185); outline-offset: 3px; border-radius: 3px; }"
+    },
+    {
+      "name": "Secondary Button (Outline)",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary CTA. Transparent with ruled border. Hover fills with raised surface.",
+      "html": "<button class=\"ds-btn-outline\">Work together</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1.1rem; border-radius: 10px; font-size: 0.8125rem; font-weight: 500; letter-spacing: -0.005em; border: 1px solid oklch(76% 0.009 75); cursor: pointer; white-space: nowrap; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; background: transparent; color: oklch(42% 0.008 80); transition: background 0.15s, color 0.15s; } .ds-btn-outline:hover { background: oklch(95.5% 0.009 80); color: oklch(12% 0.009 80); } .ds-btn-outline:active { transform: scale(0.98); } .ds-btn-outline:focus-visible { outline: 2px solid oklch(37% 0.13 185); outline-offset: 3px; border-radius: 3px; }"
+    },
+    {
+      "name": "Tag (Default)",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Display-only keyword tag. Ruled pill, mono font. Used on project cards and publication metadata.",
+      "html": "<span class=\"ds-tag\">Python</span>",
+      "css": ".ds-tag { display: inline-flex; align-items: center; padding: 0.2rem 0.5rem; border-radius: 20px; border: 1px solid oklch(88% 0.007 75); font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.625rem; font-weight: 400; color: oklch(48% 0.007 80); letter-spacing: 0.02em; line-height: 1; }"
+    },
+    {
+      "name": "Tag (Accent)",
+      "kind": "chip",
+      "refersTo": "tag-accent",
+      "description": "Named category tag. Semi-transparent teal fill, teal text. Used for research track labels only.",
+      "html": "<span class=\"ds-tag-accent\">Genomics</span>",
+      "css": ".ds-tag-accent { display: inline-flex; align-items: center; padding: 0.2rem 0.5rem; border-radius: 20px; border: 1px solid transparent; font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.625rem; font-weight: 400; color: oklch(37% 0.13 185); background: oklch(37% 0.13 185 / 0.09); letter-spacing: 0.02em; line-height: 1; }"
+    },
+    {
+      "name": "Project Card",
+      "kind": "card",
+      "refersTo": "proj-card",
+      "description": "Research project card. Flat, ruled, 10px radius. Top-border accent on hover is the primary hover signal.",
+      "html": "<article class=\"ds-proj-card\"><div class=\"ds-proj-top\"><h3 class=\"ds-proj-title\">MuSA</h3><span class=\"ds-proj-lang\"><span class=\"ds-ldot ds-ldot-nf\"></span>Nextflow</span></div><p class=\"ds-proj-desc\">End-to-end pipeline for deep variant annotation in rare disease WGS/WES analysis.</p><div class=\"ds-proj-tags\"><span class=\"ds-tag\">WGS</span><span class=\"ds-tag\">VCF</span><span class=\"ds-tag\">clinical</span></div></article>",
+      "css": ".ds-proj-card { padding: 1.5rem; border-radius: 10px; border: 1px solid oklch(88% 0.007 75); background: oklch(97.5% 0.007 80); display: flex; flex-direction: column; gap: 0.75rem; transition: border-top-color 0.15s; } .ds-proj-card:hover { border-top: 1.5px solid oklch(37% 0.13 185); } .ds-proj-top { display: flex; justify-content: space-between; align-items: flex-start; } .ds-proj-title { font-size: 0.9375rem; font-weight: 600; color: oklch(12% 0.009 80); line-height: 1.3; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; } .ds-proj-lang { display: flex; align-items: center; gap: 0.35rem; font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.625rem; color: oklch(48% 0.007 80); flex-shrink: 0; } .ds-ldot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; } .ds-ldot-nf { background: oklch(37% 0.13 185); } .ds-ldot-py { background: oklch(55% 0.15 250); } .ds-ldot-js { background: oklch(78% 0.15 87); } .ds-ldot-r { background: oklch(45% 0.15 250); } .ds-proj-desc { font-size: 0.875rem; color: oklch(42% 0.008 80); line-height: 1.6; flex: 1; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; } .ds-proj-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; } .ds-tag { display: inline-flex; align-items: center; padding: 0.2rem 0.5rem; border-radius: 20px; border: 1px solid oklch(88% 0.007 75); font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.625rem; color: oklch(48% 0.007 80); letter-spacing: 0.02em; line-height: 1; }"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "nav",
+      "description": "Fixed top nav. Frosted glass overlay via backdrop-filter. Active link in accent teal. Scroll progress bar via scaleX transform.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" class=\"ds-nav-brand\">Davide Scognamiglio</a><div class=\"ds-nav-links\"><a href=\"#about\" class=\"ds-nav-link\">About</a><a href=\"#publications\" class=\"ds-nav-link\">Publications</a><a href=\"#projects\" class=\"ds-nav-link ds-nav-link-active\">Projects</a></div></nav>",
+      "css": ".ds-nav { position: sticky; top: 0; height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; background: color-mix(in oklch, oklch(97.5% 0.007 80) 85%, transparent); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid oklch(88% 0.007 75); font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; } .ds-nav-brand { font-size: 0.875rem; font-weight: 600; color: oklch(12% 0.009 80); letter-spacing: -0.02em; } .ds-nav-links { display: flex; align-items: center; gap: 0.15rem; } .ds-nav-link { font-size: 0.8125rem; font-weight: 400; color: oklch(42% 0.008 80); padding: 0.4rem 0.65rem; border-radius: 6px; transition: background 0.15s, color 0.15s; text-decoration: none; } .ds-nav-link:hover { background: oklch(95.5% 0.009 80); color: oklch(12% 0.009 80); } .ds-nav-link-active { color: oklch(37% 0.13 185); font-weight: 500; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lab Notebook",
+    "overview": "This system reads like a working research document: precise, analytical, every element functional. The visual grammar is flat surfaces, ruled separations, monospace metadata, and type hierarchy that does all the lifting. No shadows. No gradients. No chrome that is not also content. The accent color is a measurement marker; it appears where something needs to be noted, not where something wants to look good.\n\nTypography is system-native (SF Pro on Apple, Segoe on Windows) used with intent: one tight scale, two weights, one mono stack for labels. Two themes exist as fully committed alternate worlds: light is warm (hue 80 ivory), dark is cool (hue 255 near-midnight blue-black).\n\nThis system explicitly rejects startup SaaS aesthetics, developer portfolio templates with neon glows, and flashy futuristic portfolios. The correct reference is peer-reviewed confidence: the work is the proof, the format stays out of the way.",
+    "keyCharacteristics": [
+      "Flat by default: depth comes from whitespace and type scale, never from shadows.",
+      "Tonal warmth via background tint (hue 80), not via warm accent colors.",
+      "Dark mode is a fully committed alternate world (cool hue 255), not a color inversion.",
+      "Live data (ORCID + GitHub APIs) means graceful skeleton states, never blank sections.",
+      "Motion is purposeful: staggered load entrance, scroll reveals, scroll-driven parallax. All disabled under prefers-reduced-motion."
+    ],
+    "rules": [
+      { "name": "The One-Accent Rule", "body": "Instrument Teal is the only accent. Never as a background for large regions, never in gradients, never at full opacity on surfaces. Its sole role is annotation: it marks something to notice. Rarity is structural.", "section": "colors" },
+      { "name": "The Dual-World Rule", "body": "Light and dark mode are not tonal inversions. Light is warm (hue 80); dark is cool (hue 255, near-midnight blue-black). Do not create warm dark mode variants.", "section": "colors" },
+      { "name": "The No-Shadow Rule", "body": "No box-shadow on cards or hover states. Use a 1px solid border transition instead. The only permitted blur is backdrop-filter on nav and mobile drawer, where it is structural.", "section": "elevation" },
+      { "name": "The Italic Em Rule", "body": "Section headings (h2) often split into a weight-600 plain clause and a weight-300 italic qualifier via em. Limit to one em per heading. Do not use italic emphasis on body prose for decoration.", "section": "typography" },
+      { "name": "The Mono-for-Data Rule", "body": "Monospace appears only on data-derived labels: ISO years, programming language names, statistical metadata. Not on navigation, not on body prose, not on headings.", "section": "typography" }
+    ],
+    "dos": [
+      "Do use var(--accent) on a maximum of ~10% of any viewport's visual surface.",
+      "Do express depth via tonal surface steps (--bg → --bg-raised → --bg-float) and ruled 1px var(--line) borders.",
+      "Do use the italic em pattern on display and headline elements for qualifier clauses only.",
+      "Do restrict mono (--fm) to data-derived labels: years, language names, numeric metadata.",
+      "Do add .in directly in JavaScript when rendering dynamic ORCID or GitHub content.",
+      "Do verify WCAG AA (at least 4.5:1) for any new text color in both light and dark themes.",
+      "Do provide skeleton shimmer states for any section that loads asynchronously.",
+      "Do use transform: scaleX() (not width) for animated progress bars.",
+      "Do use opacity + visibility + pointer-events (not display:none) for drawers."
+    ],
+    "donts": [
+      "Don't add box-shadow to cards, containers, or hover states.",
+      "Don't use gradient text (background-clip: text with a gradient fill).",
+      "Don't use glassmorphism decoratively; backdrop-filter is structural on nav and drawer only.",
+      "Don't add numbered section markers or tiny all-caps tracked eyebrows above headings.",
+      "Don't use canvas-motif backgrounds, neon glows, scan lines, grain overlays, or particle systems.",
+      "Don't write startup SaaS copy (powerful, seamless, next-generation, cutting-edge).",
+      "Don't introduce a second accent color.",
+      "Don't use border-left or border-right greater than 1px as a colored accent stripe.",
+      "Don't toggle mobile nav with display:none; use opacity + visibility.",
+      "Don't make dark mode warm-tinted; dark mode uses cool hue 255."
+    ]
+  }
+}

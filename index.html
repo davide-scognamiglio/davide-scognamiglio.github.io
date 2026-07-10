@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="color-scheme" content="light dark"/>
+<meta name="description" content="Davide Scognamiglio — Bioinformatician at IRCCS IOR Bologna and PhD candidate at UNIBO. Rare disease genomics, inertial sensor analysis, reproducible pipelines."/>
+<title>Davide Scognamiglio</title>
+<style>
+/* ─── TOKENS ──────────────────────────────────────────── */
+:root {
+  /* Light (default) — warm ivory */
+  --bg:          oklch(97.5% 0.007 80);
+  --bg-raised:   oklch(95.5% 0.009 80);
+  --bg-float:    oklch(93%   0.010 80);
+  --line:        oklch(88%   0.007 75);
+  --line-2:      oklch(76%   0.009 75);
+  --ink:         oklch(12%   0.009 80);
+  --ink-2:       oklch(42%   0.008 80);
+  --ink-3:       oklch(48%   0.007 80);
+  --accent:      oklch(37%   0.13  185);
+  --accent-bg:   oklch(37%   0.13  185 / 0.07);
+  --accent-tag:  oklch(37%   0.13  185 / 0.09);
+
+  --f: system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  --fm: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+
+  --nav-h: 52px;
+  --wrap: 1080px;
+  --prose: 64ch;
+  --r: 10px;
+  --r-sm: 6px;
+
+  --ease: cubic-bezier(.25,.46,.45,.94);
+  --ease-out: cubic-bezier(.16,1,.3,1);
+}
+
+[data-theme="dark"] {
+  --bg:          oklch(9.2%  0.005 255);
+  --bg-raised:   oklch(12.5% 0.006 255);
+  --bg-float:    oklch(16.5% 0.005 255);
+  --line:        oklch(21%   0.005 255);
+  --line-2:      oklch(33%   0.006 255);
+  --ink:         oklch(95%   0.003 255);
+  --ink-2:       oklch(68%   0.007 255);
+  --ink-3:       oklch(55%   0.006 255);
+  --accent:      oklch(74%   0.08  185);
+  --accent-bg:   oklch(74%   0.08  185 / 0.1);
+  --accent-tag:  oklch(74%   0.08  185 / 0.14);
+}
+
+/* ─── RESET ───────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--f);font-size:1rem;line-height:1.7;
+  font-weight:400;overflow-x:hidden;min-height:100vh;
+  transition:background .25s,color .25s;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+button{cursor:pointer;font-family:inherit;border:none;background:none;color:inherit}
+::selection{background:var(--accent-bg)}
+
+/* ─── SCROLL PROGRESS ─────────────────────────────────── */
+#prog{
+  position:fixed;top:0;left:0;height:1px;width:100%;
+  transform:scaleX(0);transform-origin:left;
+  background:var(--accent);z-index:1000;
+  transition:transform .06s linear,opacity .3s;
+}
+
+/* ─── NAV ─────────────────────────────────────────────── */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:var(--nav-h);
+  transition:background .3s,border-color .3s,backdrop-filter .3s;
+  border-bottom:1px solid transparent;
+}
+#nav.scrolled{
+  background:color-mix(in oklch, var(--bg) 80%, transparent);
+  backdrop-filter:blur(20px) saturate(1.5);
+  -webkit-backdrop-filter:blur(20px) saturate(1.5);
+  border-bottom-color:var(--line);
+}
+.nav-inner{
+  max-width:var(--wrap);margin:0 auto;padding:0 2rem;
+  height:100%;display:flex;align-items:center;justify-content:space-between;
+}
+.nav-name{
+  font-size:.875rem;font-weight:500;letter-spacing:-.01em;
+  color:var(--ink);transition:opacity .2s;
+}
+.nav-name:hover{opacity:.6}
+.nav-right{display:flex;align-items:center;gap:.25rem}
+.nav-links{display:flex;align-items:center;gap:.1rem}
+.nav-link{
+  font-size:.8rem;color:var(--ink-2);
+  padding:.35rem .6rem;border-radius:var(--r-sm);
+  transition:color .15s,background .15s;
+}
+.nav-link:hover{color:var(--ink);background:var(--bg-raised)}
+.nav-link.active{color:var(--ink)}
+.nav-divider{width:1px;height:16px;background:var(--line);margin:0 .4rem}
+.theme-btn{
+  width:32px;height:32px;border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink-2);transition:color .15s,background .15s;
+}
+.theme-btn:hover{color:var(--ink);background:var(--bg-raised)}
+.nav-toggle{
+  display:none;flex-direction:column;gap:5px;
+  width:32px;height:32px;align-items:center;justify-content:center;
+  border-radius:var(--r-sm);
+}
+.nav-toggle span{
+  display:block;width:18px;height:1.5px;background:var(--ink-2);
+  border-radius:1px;transition:transform .25s var(--ease-out),opacity .2s;
+  transform-origin:center;
+}
+.nav-toggle.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-toggle.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-toggle.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* ─── LAYOUT ──────────────────────────────────────────── */
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 2rem;position:relative;z-index:1}
+section{padding:108px 0}
+section.tinted{background:var(--bg-raised)}
+
+/* ─── HEADING SYSTEM ──────────────────────────────────── */
+h2.section-heading{
+  font-size:clamp(1.75rem,3.2vw,2.75rem);
+  font-weight:600;letter-spacing:-.035em;line-height:1.12;
+  color:var(--ink);margin-bottom:3.5rem;
+  text-wrap:balance;
+}
+h2.section-heading em{font-style:italic;font-weight:300;color:var(--ink-2)}
+
+/* ─── REVEAL ──────────────────────────────────────────── */
+.r{
+  opacity:0;transform:translateY(5px);
+  transition:opacity .5s var(--ease-out),transform .5s var(--ease-out);
+  will-change:opacity,transform;
+}
+.r.in{opacity:1;transform:none}
+.r.d1{transition-delay:.07s}
+.r.d2{transition-delay:.14s}
+.r.d3{transition-delay:.21s}
+
+/* ─── CHIPS / TAGS ─────────────────────────────────────── */
+.tag{
+  display:inline-flex;align-items:center;
+  padding:.2rem .55rem;border-radius:3px;
+  font-family:var(--fm);font-size:.65rem;font-weight:400;
+  letter-spacing:.04em;
+  background:var(--bg-float);color:var(--ink-3);
+  border:1px solid var(--line);
+}
+.tag-a{background:var(--accent-tag);color:var(--accent);border-color:color-mix(in oklch,var(--accent) 30%,transparent)}
+
+/* ─── BUTTONS ──────────────────────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.6rem 1.1rem;border-radius:var(--r);
+  font-size:.8125rem;font-weight:500;letter-spacing:-.005em;
+  border:1px solid transparent;
+  transition:opacity .15s,background .15s,border-color .15s;
+  cursor:pointer;white-space:nowrap;
+}
+.btn:active{transform:scale(.98)}
+.btn-solid{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn-solid:hover{opacity:.85}
+.btn-outline{background:transparent;color:var(--ink-2);border-color:var(--line-2)}
+.btn-outline:hover{color:var(--ink);border-color:var(--line-2);background:var(--bg-raised)}
+.btn-ghost{background:transparent;color:var(--ink-3);padding-left:.25rem;padding-right:.25rem}
+.btn-ghost:hover{color:var(--ink-2)}
+
+/* ════════════════════════════════════════════════════════
+   HERO
+════════════════════════════════════════════════════════ */
+#hero{
+  position:relative;
+  overflow:hidden;
+  min-height:100svh;
+  display:flex;align-items:center;
+  padding:calc(var(--nav-h) + 5rem) 2rem 5rem;
+}
+.hero-video{
+  position:absolute;inset:0;z-index:0;
+  pointer-events:none;
+}
+.hero-video video{
+  width:100%;height:100%;
+  object-fit:cover;
+  opacity:.09;
+  will-change:transform;
+}
+.hero-inner{
+  position:relative;z-index:1;
+  max-width:var(--wrap);margin:0 auto;width:100%;
+}
+.hero-byline{
+  display:flex;align-items:center;gap:.65rem;
+  margin-bottom:2rem;
+  animation:fadeUp .55s var(--ease-out) both;
+}
+.hero-avatar{
+  width:40px;height:40px;border-radius:50%;
+  object-fit:cover;object-position:center top;
+  background:var(--bg-raised);
+  border:1.5px solid var(--line);
+  flex-shrink:0;
+}
+.hero-byline-text{
+  font-size:.8125rem;color:var(--ink-2);font-weight:400;
+}
+.hero-byline-name{
+  font-weight:500;color:var(--ink);
+  display:block;line-height:1.3;
+  font-size:.875rem;
+}
+.hero-byline-sub{
+  font-size:.75rem;color:var(--ink-3);
+  display:block;line-height:1.3;margin-top:.05rem;
+}
+h1.hero-h{
+  font-size:clamp(2.9rem,6.5vw,6rem);
+  font-weight:600;letter-spacing:-.04em;line-height:1.0;
+  color:var(--ink);max-width:13em;margin-bottom:1.75rem;
+  text-wrap:balance;
+  animation:fadeUp .6s var(--ease-out) .07s both;
+}
+h1.hero-h em{font-style:italic;font-weight:300;color:var(--accent)}
+.hero-body{
+  max-width:var(--prose);font-size:clamp(.9375rem,1.4vw,1rem);
+  color:var(--ink-2);line-height:1.8;margin-bottom:1rem;
+  font-weight:400;
+  animation:fadeUp .55s var(--ease-out) .14s both;
+}
+.hero-intro{
+  max-width:560px;font-size:.9375rem;
+  color:var(--ink-3);line-height:1.75;
+  margin-bottom:2rem;
+  animation:fadeUp .55s var(--ease-out) .2s both;
+}
+.hero-intro strong{color:var(--ink-2);font-weight:500}
+.hero-actions{
+  display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;
+  animation:fadeUp .55s var(--ease-out) .27s both;
+}
+.hero-meta{
+  margin-top:3rem;padding-top:1.75rem;
+  border-top:1px solid var(--line);
+  display:flex;gap:2rem;flex-wrap:wrap;
+  animation:fadeUp .55s var(--ease-out) .34s both;
+}
+.hero-meta-item{display:flex;flex-direction:column;gap:.15rem}
+.hero-meta-n{
+  font-size:1.375rem;font-weight:600;letter-spacing:-.03em;
+  line-height:1;color:var(--ink);
+}
+.hero-meta-l{
+  font-family:var(--fm);font-size:.6rem;font-weight:400;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ─── HERO SCROLL CUE ────────────────────────────────── */
+.hero-scroll-cue{
+  position:fixed;bottom:2.5rem;left:50%;translate:-50% 0;
+  width:1px;height:44px;pointer-events:none;overflow:hidden;z-index:2;
+}
+.hero-scroll-cue::before{
+  content:'';display:block;width:100%;height:100%;
+  background:linear-gradient(to bottom,var(--ink-3) 0%,transparent 100%);
+  transform:translateY(-100%);
+  animation:scroll-cue-in .5s var(--ease-out) 2s forwards;
+}
+@keyframes scroll-cue-in{to{transform:translateY(0)}}
+
+/* ─── SCROLL-DRIVEN PARALLAX HERO ────────────────────── */
+@supports(animation-timeline:scroll()){
+  @media(min-width:769px){
+    #hero{
+      min-height:140svh;display:block;align-items:initial;
+      padding-top:calc(var(--nav-h) + 4rem);padding-bottom:0;
+      overflow:visible;clip-path:inset(0);
+    }
+    .hero-inner{
+      position:sticky;top:calc(var(--nav-h) + 4rem);
+      padding-bottom:5rem;
+    }
+    @keyframes hero-vid-parallax{
+      from{transform:scale(1) translateY(0)}
+      to  {transform:scale(1.1) translateY(-5%)}
+    }
+    .hero-video{
+      animation:hero-vid-parallax linear both;
+      animation-timeline:scroll(root);
+      animation-range:0px 140svh;
+      will-change:transform;
+    }
+    @keyframes hero-layer-exit{
+      from{opacity:1;transform:translateY(0)}
+      to  {opacity:0;transform:translateY(-44px)}
+    }
+    .hero-byline{
+      animation:fadeUp .55s var(--ease-out) both,hero-layer-exit linear forwards;
+      animation-timeline:auto,scroll(root);
+      animation-range:auto,78svh 114svh;
+    }
+    .hero-actions{
+      animation:fadeUp .55s var(--ease-out) .27s both,hero-layer-exit linear forwards;
+      animation-timeline:auto,scroll(root);
+      animation-range:auto,80svh 116svh;
+    }
+    .hero-body{
+      animation:fadeUp .55s var(--ease-out) .14s both,hero-layer-exit linear forwards;
+      animation-timeline:auto,scroll(root);
+      animation-range:auto,84svh 122svh;
+    }
+    .hero-intro{
+      animation:fadeUp .55s var(--ease-out) .2s both,hero-layer-exit linear forwards;
+      animation-timeline:auto,scroll(root);
+      animation-range:auto,86svh 124svh;
+    }
+    h1.hero-h{
+      animation:fadeUp .6s var(--ease-out) .07s both,hero-layer-exit linear forwards;
+      animation-timeline:auto,scroll(root);
+      animation-range:auto,92svh 132svh;
+    }
+  }
+  @media(prefers-reduced-motion:reduce){
+    #hero{min-height:100svh!important;display:flex!important;align-items:center!important;padding-top:calc(var(--nav-h) + 5rem)!important;padding-bottom:5rem!important}
+    .hero-inner{position:relative!important;top:auto!important;padding-bottom:0!important}
+    .hero-video{animation:none!important}
+    .hero-byline,.hero-actions,.hero-body,.hero-intro{animation:none!important;opacity:1!important}
+    h1.hero-h{animation:none!important;opacity:1!important}
+    .hero-scroll-cue{display:none!important}
+  }
+}
+
+/* ════════════════════════════════════════════════════════
+   ABOUT
+════════════════════════════════════════════════════════ */
+.about-grid{
+  display:grid;grid-template-columns:1fr 220px;
+  gap:4rem;align-items:start;
+}
+.about-text p{
+  font-size:1rem;color:var(--ink-2);line-height:1.82;
+  margin-bottom:1rem;
+}
+.about-text p:last-child{margin-bottom:0}
+.about-text p strong{color:var(--ink);font-weight:500}
+.about-links{
+  display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.5rem;
+}
+.about-ext{
+  display:inline-flex;align-items:center;gap:.35rem;
+  font-family:var(--fm);font-size:.65rem;font-weight:400;
+  letter-spacing:.04em;color:var(--ink-3);
+  padding:.28rem .6rem;border:1px solid var(--line);border-radius:4px;
+  transition:color .15s,border-color .15s;
+}
+.about-ext:hover{color:var(--accent);border-color:color-mix(in oklch,var(--accent) 40%,transparent)}
+.about-sidebar{display:flex;flex-direction:column;gap:1px;position:sticky;top:calc(var(--nav-h) + 2rem)}
+.info-block{
+  padding:.9rem 0;border-bottom:1px solid var(--line);
+}
+.info-block:first-child{border-top:1px solid var(--line)}
+.info-block-label{
+  font-family:var(--fm);font-size:.6rem;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  margin-bottom:.45rem;
+}
+.info-block-value{
+  font-size:.875rem;font-weight:500;color:var(--ink);line-height:1.3;
+}
+.info-block-sub{
+  font-size:.8rem;color:var(--ink-3);margin-top:.15rem;
+}
+.info-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.4rem}
+
+/* ─── Profile photo ─── */
+.photo-wrap{
+  margin-bottom:2rem;
+}
+.photo-circle{
+  width:180px;height:180px;border-radius:50%;
+  overflow:hidden;margin:0 auto;
+  border:1.5px solid var(--line);
+  background:var(--bg-raised);
+}
+.photo-circle img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center 10%;
+}
+
+/* ════════════════════════════════════════════════════════
+   RESEARCH
+════════════════════════════════════════════════════════ */
+.research-items{display:flex;flex-direction:column}
+.research-row{
+  display:grid;grid-template-columns:180px 1fr;
+  gap:0;padding:1.75rem 0;border-bottom:1px solid var(--line);
+}
+.research-row:first-child{border-top:1px solid var(--line)}
+.research-track{
+  font-family:var(--fm);font-size:.6875rem;font-weight:400;
+  color:var(--accent);letter-spacing:.04em;
+  padding-right:2rem;padding-top:.2rem;
+  text-transform:uppercase;line-height:1.3;
+}
+.research-content h3{
+  font-size:.9375rem;font-weight:600;color:var(--ink);
+  letter-spacing:-.01em;margin-bottom:.45rem;line-height:1.3;
+}
+.research-content p{
+  font-size:.875rem;color:var(--ink-2);line-height:1.78;margin-bottom:.65rem;
+}
+.research-tags{display:flex;flex-wrap:wrap;gap:.3rem}
+
+/* ════════════════════════════════════════════════════════
+   PUBLICATIONS
+════════════════════════════════════════════════════════ */
+.pub-list{display:flex;flex-direction:column}
+.pub-row{
+  display:grid;grid-template-columns:54px 1fr;
+  padding:1.5rem 0;border-bottom:1px solid var(--line);
+  transition:background .15s;
+}
+.pub-row:first-child{border-top:1px solid var(--line)}
+.pub-year{
+  font-family:var(--fm);font-size:.6875rem;font-weight:400;
+  color:var(--accent);letter-spacing:.04em;padding-top:.2rem;
+}
+.pub-body{display:flex;flex-direction:column;gap:.35rem}
+.pub-title{font-size:.9375rem;font-weight:500;color:var(--ink);line-height:1.5}
+.pub-authors{font-family:var(--fm);font-size:.65rem;color:var(--ink-3);letter-spacing:.02em}
+.pub-authors strong{color:var(--accent)}
+.pub-journal{font-size:.8125rem;color:var(--ink-3);font-style:italic}
+.pub-foot{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem .4rem;margin-top:.15rem}
+.pub-link{
+  font-family:var(--fm);font-size:.625rem;color:var(--ink-3);
+  transition:color .15s;
+}
+.pub-link:hover{color:var(--accent)}
+.pub-more{margin-top:2rem}
+.pub-state{
+  padding:2.5rem 0;
+  font-family:var(--fm);font-size:.75rem;color:var(--ink-3);
+  display:flex;align-items:center;gap:.6rem;
+  border-top:1px solid var(--line);
+}
+.pub-state a{color:var(--accent)}
+.pub-state a:hover{text-decoration:underline}
+.pub-spinner{
+  width:14px;height:14px;border-radius:50%;flex-shrink:0;
+  border:1.5px solid var(--line-2);border-top-color:var(--accent);
+  animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pub-skeleton{display:flex;flex-direction:column}
+.pub-skel-row{
+  display:grid;grid-template-columns:54px 1fr;gap:0;
+  padding:1.5rem 0;border-bottom:1px solid var(--line);
+}
+.pub-skel-row:first-child{border-top:1px solid var(--line)}
+.pub-skel-bar{
+  height:.75rem;border-radius:3px;
+  background:linear-gradient(90deg,var(--bg-float) 25%,var(--bg-raised) 50%,var(--bg-float) 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.4s ease-in-out infinite;
+}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.pub-skel-col{display:flex;flex-direction:column;gap:.6rem;padding-top:.1rem}
+.pub-skel-title{width:70%}
+.pub-skel-meta{width:40%;height:.6rem}
+.pub-skel-year{width:28px;height:.6rem;margin-top:.15rem}
+
+/* ════════════════════════════════════════════════════════
+   PROJECTS
+════════════════════════════════════════════════════════ */
+.projects-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+}
+.proj{
+  background:var(--bg);padding:1.75rem;
+  display:flex;flex-direction:column;gap:0;
+  position:relative;
+  transition:background .2s;
+}
+.proj::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:var(--accent);opacity:0;transition:opacity .2s;
+}
+.proj:hover{background:var(--bg-raised)}
+.proj:hover::after{opacity:1}
+.proj-meta{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem}
+.proj-links-ext{display:flex;gap:.25rem}
+.proj-link{
+  display:flex;align-items:center;justify-content:center;
+  width:26px;height:26px;border-radius:4px;
+  color:var(--ink-3);border:1px solid var(--line);
+  transition:color .15s,border-color .15s,background .15s;
+}
+.proj-link:hover{color:var(--accent);border-color:color-mix(in oklch,var(--accent) 35%,transparent)}
+.proj-name{
+  font-size:1.125rem;font-weight:600;letter-spacing:-.025em;
+  color:var(--ink);margin-bottom:.2rem;
+}
+.proj-sub{
+  font-family:var(--fm);font-size:.625rem;font-weight:400;
+  letter-spacing:.04em;color:var(--ink-3);margin-bottom:.9rem;
+}
+.proj-desc{
+  font-size:.875rem;color:var(--ink-2);line-height:1.75;
+  margin-bottom:1.1rem;flex:1;
+}
+.proj-desc em{font-style:italic}
+.proj-tech{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.9rem}
+.proj-foot{
+  display:flex;align-items:center;gap:.75rem;
+  font-family:var(--fm);font-size:.625rem;color:var(--ink-3);
+  padding-top:.9rem;border-top:1px solid var(--line);
+}
+.proj-stat{display:flex;align-items:center;gap:.25rem}
+.proj-lang{display:flex;align-items:center;gap:.3rem;margin-left:auto}
+.ldot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ldot-py{background:oklch(52% 0.13 245)}.ldot-nf{background:oklch(60% 0.13 155)}.ldot-js{background:oklch(82% 0.17 98)}.ldot-r{background:oklch(52% 0.15 245)}.ldot-gen{background:oklch(60% 0.02 240)}
+.proj-skel{background:var(--bg);padding:1.75rem;display:flex;flex-direction:column;gap:.8rem}
+.proj-skel-bar{border-radius:3px;background:linear-gradient(90deg,var(--bg-float) 25%,var(--bg-raised) 50%,var(--bg-float) 75%);background-size:200% 100%;animation:shimmer 1.4s ease-in-out infinite}
+.proj-skel-h{height:.9rem;width:45%}.proj-skel-sub{height:.55rem;width:60%}
+.proj-skel-d1{height:.7rem;width:88%}.proj-skel-d2{height:.7rem;width:72%}.proj-skel-d3{height:.7rem;width:55%}
+.proj-skel-tags{display:flex;gap:.35rem;margin-top:.1rem}
+.proj-skel-tag{height:.55rem;width:2.8rem;border-radius:10px;background:linear-gradient(90deg,var(--bg-float) 25%,var(--bg-raised) 50%,var(--bg-float) 75%);background-size:200% 100%;animation:shimmer 1.4s ease-in-out infinite}
+
+/* ════════════════════════════════════════════════════════
+   EXPERIENCE
+════════════════════════════════════════════════════════ */
+.tl{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+.tl-row{
+  display:grid;grid-template-columns:160px 1fr;
+  padding:1.75rem 0;border-bottom:1px solid var(--line);
+  gap:0;
+}
+.tl-when{
+  font-family:var(--fm);font-size:.6875rem;color:var(--ink-3);
+  letter-spacing:.04em;padding-right:2rem;padding-top:.2rem;
+  line-height:1.4;
+}
+.tl-role{font-size:.9375rem;font-weight:600;color:var(--ink);letter-spacing:-.01em;margin-bottom:.2rem}
+.tl-org{font-family:var(--fm);font-size:.65rem;color:var(--accent);letter-spacing:.03em;margin-bottom:.65rem}
+.tl-desc{font-size:.875rem;color:var(--ink-2);line-height:1.8;margin-bottom:.75rem}
+.tl-desc em{font-style:italic}
+.tl-tags{display:flex;flex-wrap:wrap;gap:.3rem}
+.tl-skel-bar{border-radius:3px;background:linear-gradient(90deg,var(--bg-float) 25%,var(--bg-raised) 50%,var(--bg-float) 75%);background-size:200% 100%;animation:shimmer 1.4s ease-in-out infinite}
+
+/* ════════════════════════════════════════════════════════
+   CONTACT
+════════════════════════════════════════════════════════ */
+.contact-grid{display:grid;grid-template-columns:1fr 360px;gap:5rem;align-items:start}
+.contact-lead p{
+  font-size:1rem;color:var(--ink-2);line-height:1.82;margin-bottom:1.5rem;
+  max-width:var(--prose);
+}
+.contact-email{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:var(--fm);font-size:.875rem;font-weight:400;
+  color:var(--accent);border-bottom:1px solid color-mix(in oklch,var(--accent) 30%,transparent);
+  padding-bottom:.15rem;transition:border-color .2s;
+}
+.contact-email:hover{border-bottom-color:var(--accent)}
+.contact-links{display:flex;flex-direction:column;gap:.35rem}
+.contact-card{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.75rem .9rem;
+  border:1px solid var(--line);border-radius:var(--r);
+  transition:border-color .15s,background .15s;
+}
+.contact-card:hover{border-color:var(--line-2);background:var(--bg-raised)}
+.cc-icon{
+  width:32px;height:32px;border-radius:5px;
+  background:var(--bg-float);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink-3);flex-shrink:0;
+}
+.cc-body{flex:1;display:flex;flex-direction:column;gap:.1rem}
+.cc-label{font-size:.875rem;font-weight:500;color:var(--ink);line-height:1}
+.cc-sub{font-family:var(--fm);font-size:.625rem;color:var(--ink-3);letter-spacing:.02em}
+.cc-arrow{color:var(--ink-3);transition:transform .2s,color .15s;flex-shrink:0}
+.contact-card:hover .cc-arrow{transform:translateX(2px);color:var(--ink-2)}
+.contact-card-cta{border-color:color-mix(in oklch,var(--accent) 25%,transparent)}
+.contact-card-cta .cc-icon{color:var(--accent)}
+.contact-card-cta:hover{border-color:color-mix(in oklch,var(--accent) 50%,transparent)}
+
+/* ─── FOOTER ───────────────────────────────────────────── */
+footer{
+  background:var(--bg-raised);border-top:1px solid var(--line);
+  padding:1.5rem 0;
+}
+.foot-inner{
+  max-width:var(--wrap);margin:0 auto;padding:0 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:.75rem;
+}
+.foot-copy{font-family:var(--fm);font-size:.625rem;color:var(--ink-3);letter-spacing:.04em}
+#foot-coord{transition:opacity .3s}
+
+/* ════════════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════════════ */
+@media(max-width:960px){
+  .about-grid{grid-template-columns:1fr;gap:2.5rem}
+  .about-sidebar{position:static;display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+  .info-block{border:none;padding:.6rem 0;border-bottom:1px solid var(--line)!important}
+  .photo-wrap{display:none}
+  .contact-grid{grid-template-columns:1fr;gap:2.5rem}
+  .research-row{grid-template-columns:1fr}
+  .research-track{margin-bottom:.35rem;padding-right:0}
+}
+@media(max-width:768px){
+  :root{--nav-h:48px}
+  .wrap{padding:0 1.25rem}
+  section{padding:72px 0}
+  .nav-links{display:flex;position:fixed;top:var(--nav-h);left:0;right:0;
+    background:color-mix(in oklch,var(--bg) 95%,transparent);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--line);
+    flex-direction:column;padding:1rem 1.25rem 1.25rem;gap:.15rem;z-index:99;
+    opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px);
+    transition:opacity .18s var(--ease-out),transform .18s var(--ease-out),visibility 0s .18s;
+  }
+  .nav-links.open{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity .18s var(--ease-out),transform .18s var(--ease-out),visibility 0s 0s}
+  .nav-link{font-size:.875rem;padding:.55rem .75rem;width:100%;border-radius:var(--r-sm)}
+  .nav-toggle{display:flex}
+  .nav-divider{display:none}
+  #hero{padding-top:calc(var(--nav-h) + 3rem);padding-bottom:3.5rem}
+  h1.hero-h{font-size:clamp(2.2rem,10vw,3.5rem)}
+  .hero-meta{gap:1.25rem}
+  .projects-grid{grid-template-columns:1fr}
+  .tl-row{grid-template-columns:1fr}
+  .tl-when{margin-bottom:.35rem;padding-right:0}
+  .about-sidebar{grid-template-columns:1fr}
+  .hero-actions{flex-direction:column;align-items:flex-start}
+  .foot-inner{flex-direction:column;align-items:flex-start;gap:.35rem}
+  .hero-scroll-cue{display:none}
+}
+@media(max-width:440px){
+  .hero-meta{flex-direction:column;gap:.75rem}
+}
+@media(min-width:1400px){:root{--wrap:1200px}}
+
+/* ─── TOUCH TARGETS ────────────────────────────────────── */
+@media(pointer:coarse){
+  .nav-link{min-height:44px;display:inline-flex;align-items:center}
+  .nav-toggle{width:44px;height:44px}
+  .theme-btn{width:44px;height:44px}
+}
+
+/* ─── REDUCED MOTION ───────────────────────────────────── */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .r{opacity:1;transform:none}
+  .hero-video video{display:none}
+}
+@media(prefers-reduced-data:reduce){
+  .hero-video video{display:none}
+}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+</style>
+</head>
+
+<body>
+<div id="prog" aria-hidden="true"></div>
+
+<!-- ── NAV ─────────────────────────────────────────────── -->
+<nav id="nav" role="navigation" aria-label="Site navigation">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-name">Davide Scognamiglio</a>
+    <div class="nav-right">
+      <ul class="nav-links" id="navLinks" role="list">
+        <li><a href="#about"        class="nav-link">About</a></li>
+        <li><a href="#research"     class="nav-link">Research</a></li>
+        <li><a href="#publications" class="nav-link">Publications</a></li>
+        <li><a href="#projects"     class="nav-link">Projects</a></li>
+        <li><a href="#experience"   class="nav-link">Experience</a></li>
+        <li><a href="#contact"      class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-divider" aria-hidden="true"></div>
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle colour theme">
+        <svg id="themeIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+      <button class="nav-toggle" id="navToggle" aria-label="Open navigation" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+<!-- ── HERO ────────────────────────────────────────────── -->
+<section id="hero" aria-label="Introduction">
+  <div class="hero-video" aria-hidden="true">
+    <video autoplay loop muted playsinline preload="auto">
+      <source src="assets/slow_video.mp4" type="video/mp4"/>
+    </video>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-byline">
+      <img src="assets/resized_avatar.png" alt="Photo of Davide Scognamiglio" class="hero-avatar" width="40" height="40"/>
+      <span class="hero-byline-text">
+        <span class="hero-byline-name">Davide Scognamiglio</span>
+        <span class="hero-byline-sub">Bioinformatician · IOR &amp; UNIBO, Bologna</span>
+      </span>
+    </div>
+    <h1 class="hero-h">
+      You need a<br><em>data scientist.</em>
+    </h1>
+    <p class="hero-body">
+      The bottleneck in modern research is making sense of the generated data.
+      Your growing mountain of raw files needs expert hands before they become findings and papers.
+    </p>
+    <p class="hero-intro">
+      I build the pipelines, tools, and analytical frameworks that close that gap —
+      reproducibly, rigorously, at scale. My work spans <strong>rare disease genomics</strong>
+      and <strong>inertial sensor analysis</strong>, with a thread of clinical data work running through both.
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn btn-solid">See my work</a>
+      <a href="#contact"  class="btn btn-outline">Work together</a>
+    </div>
+  </div>
+</section>
+<div class="hero-scroll-cue" aria-hidden="true"></div>
+
+<!-- ── ABOUT ────────────────────────────────────────────── -->
+<section id="about" class="tinted">
+  <div class="wrap">
+
+    <h2 class="section-heading r">
+      The gap between data<br><em>and discovery.</em>
+    </h2>
+    <div class="about-grid">
+      <div>
+        <div class="about-text r">
+          <p>
+            I'm a bioinformatician at <strong>IRCCS Istituto Ortopedico Rizzoli (IOR)</strong>
+            in Bologna, Italy, and a PhD candidate in Data Science and Computation at the
+            <strong>Alma Mater Studiorum — Università di Bologna (UNIBO)</strong>.
+          </p>
+          <p>
+            My work moves along two main research lines. The first is <strong>rare disease genomics</strong>:
+            building end-to-end pipelines for WGS/WES variant annotation and clinical prioritisation,
+            integrating machine learning for VUS reclassification. This line produced MuSA, a
+            Nextflow pipeline for deep variant annotation, published in BMC Bioinformatics in 2026.
+          </p>
+          <p>
+            The second is <strong>inertial sensor (IMU) analysis</strong>: extracting objective gait
+            and motion biomarkers from wearable sensors in orthopaedic and rehabilitation contexts.
+            Beyond these two tracks, I contribute to clinical data analyses — genotype-phenotype
+            studies, patient registry work, whatever the research environment brings.
+          </p>
+          <p>
+            I treat computational infrastructure as a scientific contribution in its own right:
+            reproducible, version-controlled, containerised, and documented.
+          </p>
+        </div>
+        <div class="about-links r d1">
+          <a href="https://github.com/davide-scognamiglio" target="_blank" rel="noopener noreferrer" class="about-ext">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="https://linkedin.com/in/davidescognamiglio" target="_blank" rel="noopener noreferrer" class="about-ext">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+          <a href="https://orcid.org/0009-0007-5163-0327" target="_blank" rel="noopener noreferrer" class="about-ext">ORCID</a>
+        </div>
+      </div>
+      <div>
+        <div class="photo-wrap r">
+          <div class="photo-circle">
+            <img src="assets/resized_avatar.png" alt="Davide Scognamiglio" width="180" height="180"/>
+          </div>
+        </div>
+        <div class="about-sidebar r d1">
+          <div class="info-block">
+            <p class="info-block-label">Position</p>
+            <p class="info-block-value">Bioinformatician</p>
+            <p class="info-block-sub">IRCCS IOR · Bologna, IT</p>
+          </div>
+          <div class="info-block">
+            <p class="info-block-label">PhD</p>
+            <p class="info-block-value">Data Science &amp; Computation</p>
+            <p class="info-block-sub">Alma Mater Studiorum UNIBO</p>
+          </div>
+          <div class="info-block">
+            <p class="info-block-label">Research tracks</p>
+            <div class="info-tags">
+              <span class="tag tag-a">Genomics</span>
+              <span class="tag tag-a">IMU Analysis</span>
+              <span class="tag">Nextflow</span>
+              <span class="tag">ML</span>
+              <span class="tag">Clinical Data</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RESEARCH ──────────────────────────────────────────── -->
+<section id="research">
+  <div class="wrap">
+    <h2 class="section-heading r">What I work on.</h2>
+    <div class="research-items">
+      <div class="research-row r">
+        <p class="research-track">Genomics</p>
+        <div class="research-content">
+          <h3>Rare Disease Genomics</h3>
+          <p>End-to-end variant annotation and clinical prioritisation for Mendelian disorders. Core output: MuSA, an nf-core–compliant Nextflow pipeline integrating VEP (22 plugins), ANNOVAR, dbNSFP, RENOVO, and automated ACMG/AMP classification. Produces 920-column MAF files and interactive HTML reports for clinical review.</p>
+          <div class="research-tags"><span class="tag">WGS / WES</span><span class="tag">Nextflow</span><span class="tag">ACMG/AMP</span><span class="tag">nf-core</span></div>
+        </div>
+      </div>
+      <div class="research-row r">
+        <p class="research-track">Genomics</p>
+        <div class="research-content">
+          <h3>AI-Assisted Variant Interpretation</h3>
+          <p>Machine learning for VUS reclassification, building on tools like RENOVO (82.6% balanced accuracy on reclassified variants). Integrating conservation, structural predictions, and functional annotations for evidence-based pathogenicity scoring beyond standard criteria.</p>
+          <div class="research-tags"><span class="tag">VUS</span><span class="tag">RENOVO</span><span class="tag">Machine Learning</span></div>
+        </div>
+      </div>
+      <div class="research-row r">
+        <p class="research-track">IMU</p>
+        <div class="research-content">
+          <h3>Inertial Sensor Analysis</h3>
+          <p>Signal processing and statistical modelling of IMU data from wearable sensors in orthopaedic and rehabilitation settings. Extracting objective gait and motion biomarkers that translate raw accelerometer and gyroscope streams into clinically actionable outcome measures.</p>
+          <div class="research-tags"><span class="tag">IMU / Wearables</span><span class="tag">Gait Analysis</span><span class="tag">Signal Processing</span></div>
+        </div>
+      </div>
+      <div class="research-row r">
+        <p class="research-track">Collateral</p>
+        <div class="research-content">
+          <h3>Clinical Data Analysis</h3>
+          <p>Genotype-phenotype correlations, patient registry cohort studies, and cross-disciplinary data analyses. Whatever dataset the clinical environment generates, the approach is the same: reproducible, version-controlled, documented.</p>
+          <div class="research-tags"><span class="tag">Registry Data</span><span class="tag">Genotype-Phenotype</span><span class="tag">R / Python</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PUBLICATIONS ──────────────────────────────────────── -->
+<section id="publications" class="tinted">
+  <div class="wrap">
+    <h2 class="section-heading r">Published work.</h2>
+    <div id="pub-list" class="pub-list" aria-live="polite" aria-label="Publications list">
+      <!-- populated by JS from ORCID API -->
+      <div class="pub-skeleton">
+        <div class="pub-skel-row"><div class="pub-skel-year pub-skel-bar"></div><div class="pub-skel-col"><div class="pub-skel-bar pub-skel-title"></div><div class="pub-skel-bar pub-skel-meta"></div></div></div>
+        <div class="pub-skel-row"><div class="pub-skel-year pub-skel-bar"></div><div class="pub-skel-col"><div class="pub-skel-bar pub-skel-title"></div><div class="pub-skel-bar pub-skel-meta"></div></div></div>
+        <div class="pub-skel-row"><div class="pub-skel-year pub-skel-bar"></div><div class="pub-skel-col"><div class="pub-skel-bar pub-skel-title"></div><div class="pub-skel-bar pub-skel-meta"></div></div></div>
+      </div>
+    </div>
+    <div class="pub-more r">
+      <a href="https://orcid.org/0009-0007-5163-0327" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+        View profile on ORCID
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ──────────────────────────────────────────── -->
+<section id="projects">
+  <div class="wrap">
+    <h2 class="section-heading r">Pipelines &amp; open-source tools.</h2>
+    <div class="projects-grid r" id="proj-grid">
+
+      <div class="proj">
+        <div class="proj-meta">
+          <div class="proj-links-ext">
+            <a href="https://github.com/davide-scognamiglio/MuSA" target="_blank" rel="noopener noreferrer" class="proj-link" aria-label="MuSA on GitHub">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+          </div>
+        </div>
+        <p class="proj-name">MuSA</p>
+        <p class="proj-sub">Multi-Source variant Annotation</p>
+        <p class="proj-desc">nf-core–compliant Nextflow pipeline for deep variant annotation and clinical ranking. Integrates VEP (22 plugins), ANNOVAR, native dbNSFP, RENOVO scoring, and automated ACMG/AMP classification via GeneBe. Produces up to 920-column MAF files and interactive HTML reports with HPO-matched gene panel filtering. Published in <em>BMC Bioinformatics</em> 2026.</p>
+        <div class="proj-tech"><span class="tag">Nextflow DSL2</span><span class="tag">VEP</span><span class="tag">dbNSFP</span><span class="tag">RENOVO</span><span class="tag">Docker</span></div>
+        <div class="proj-foot">
+          <span class="proj-lang"><span class="ldot ldot-py" aria-hidden="true"></span>Python / Nextflow</span>
+        </div>
+      </div>
+
+      <!-- populated by JS from GitHub API -->
+      <div id="proj-api-slot" style="display:contents" aria-live="polite" aria-label="GitHub repositories">
+        <div class="proj-skel"><div class="proj-skel-bar proj-skel-h"></div><div class="proj-skel-bar proj-skel-sub"></div><div class="proj-skel-bar proj-skel-d1"></div><div class="proj-skel-bar proj-skel-d2"></div><div class="proj-skel-bar proj-skel-d3"></div><div class="proj-skel-tags"><span class="proj-skel-tag"></span><span class="proj-skel-tag"></span><span class="proj-skel-tag"></span></div></div>
+        <div class="proj-skel"><div class="proj-skel-bar proj-skel-h"></div><div class="proj-skel-bar proj-skel-sub"></div><div class="proj-skel-bar proj-skel-d1"></div><div class="proj-skel-bar proj-skel-d2"></div><div class="proj-skel-bar proj-skel-d3"></div><div class="proj-skel-tags"><span class="proj-skel-tag"></span><span class="proj-skel-tag"></span><span class="proj-skel-tag"></span></div></div>
+        <div class="proj-skel"><div class="proj-skel-bar proj-skel-h"></div><div class="proj-skel-bar proj-skel-sub"></div><div class="proj-skel-bar proj-skel-d1"></div><div class="proj-skel-bar proj-skel-d2"></div><div class="proj-skel-bar proj-skel-d3"></div><div class="proj-skel-tags"><span class="proj-skel-tag"></span><span class="proj-skel-tag"></span><span class="proj-skel-tag"></span></div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ────────────────────────────────────────── -->
+<section id="experience" class="tinted">
+  <div class="wrap">
+    <h2 class="section-heading r">Career.</h2>
+    <div class="tl" id="exp-list" aria-live="polite" aria-label="Career history">
+      <!-- populated by JS from ORCID employments + educations API -->
+      <div class="tl-row">
+        <div class="tl-skel-bar" style="width:82px;height:.6rem;margin-top:.25rem"></div>
+        <div style="display:flex;flex-direction:column;gap:.55rem">
+          <div class="tl-skel-bar" style="width:52%;height:.85rem"></div>
+          <div class="tl-skel-bar" style="width:38%;height:.55rem"></div>
+          <div class="tl-skel-bar" style="width:80%;height:.65rem"></div>
+          <div class="tl-skel-bar" style="width:65%;height:.65rem"></div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-skel-bar" style="width:66px;height:.6rem;margin-top:.25rem"></div>
+        <div style="display:flex;flex-direction:column;gap:.55rem">
+          <div class="tl-skel-bar" style="width:48%;height:.85rem"></div>
+          <div class="tl-skel-bar" style="width:42%;height:.55rem"></div>
+          <div class="tl-skel-bar" style="width:75%;height:.65rem"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ──────────────────────────────────────────── -->
+<section id="contact">
+  <div class="wrap">
+    <h2 class="section-heading r">Reach out.</h2>
+    <div class="contact-grid">
+      <div class="contact-lead r">
+        <p>Whether you have a dataset that needs analysis, a genomics pipeline to design, an IMU signal that needs a model, or just want to talk about a research problem — reach out.</p>
+        <a href="mailto:davide.scognamiglio@ior.it" class="contact-email">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          davide.scognamiglio@ior.it
+        </a>
+      </div>
+      <div class="contact-links r d1">
+        <a href="https://github.com/davide-scognamiglio" target="_blank" rel="noopener noreferrer" class="contact-card">
+          <div class="cc-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg></div>
+          <div class="cc-body"><span class="cc-label">GitHub</span><span class="cc-sub">@davide-scognamiglio</span></div>
+          <svg class="cc-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="https://linkedin.com/in/davidescognamiglio" target="_blank" rel="noopener noreferrer" class="contact-card">
+          <div class="cc-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
+          <div class="cc-body"><span class="cc-label">LinkedIn</span><span class="cc-sub">Davide Scognamiglio</span></div>
+          <svg class="cc-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="https://orcid.org/0009-0007-5163-0327" target="_blank" rel="noopener noreferrer" class="contact-card">
+          <div class="cc-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.516.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.016-5.325 5.016h-3.919V7.416zm1.444 1.303v7.444h2.297c2.359 0 3.881-1.303 3.881-3.722 0-2.066-1.303-3.722-3.881-3.722h-2.297z"/></svg></div>
+          <div class="cc-body"><span class="cc-label">ORCID</span><span class="cc-sub">0000-0000-0000-0000</span></div>
+          <svg class="cc-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="assets/cv_davide_scognamiglio.pdf" download class="contact-card contact-card-cta">
+          <div class="cc-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <div class="cc-body"><span class="cc-label">Download CV</span><span class="cc-sub">PDF · Updated May 2026</span></div>
+          <svg class="cc-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <span class="foot-copy">© 2026 Davide Scognamiglio</span>
+    <span class="foot-copy" id="foot-coord">chr1:1–248,956,422</span>
+    <span class="foot-copy">Bioinformatician · IOR &amp; UNIBO · Bologna</span>
+  </div>
+</footer>
+
+<script>
+/* ─── THEME ──────────────────────────────────────────── */
+const html = document.documentElement;
+const themeBtn = document.getElementById('themeBtn');
+const themeIcon = document.getElementById('themeIcon');
+
+/* Light is default. Dark is toggled. Icon shows what mode you'll switch TO. */
+const MOON = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
+const SUN  = `<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>`;
+
+function isDark(){ return html.dataset.theme === 'dark' }
+
+function applyTheme(t){
+  if(t === 'dark'){ html.dataset.theme='dark'; localStorage.setItem('theme','dark') }
+  else            { delete html.dataset.theme;  localStorage.removeItem('theme') }
+  themeIcon.innerHTML = isDark() ? SUN : MOON;
+}
+
+(function initTheme(){
+  const saved = localStorage.getItem('theme');
+  if(saved === 'dark') html.dataset.theme = 'dark';
+  themeIcon.innerHTML = isDark() ? SUN : MOON;
+})();
+
+themeBtn.addEventListener('click', () => applyTheme(isDark() ? 'light' : 'dark'));
+
+/* ─── SCROLL PROGRESS ────────────────────────────────── */
+const prog = document.getElementById('prog');
+window.addEventListener('scroll', () => {
+  const s = window.scrollY, t = document.documentElement.scrollHeight - window.innerHeight;
+  prog.style.transform = t > 0 ? `scaleX(${s/t})` : 'scaleX(0)';
+}, {passive:true});
+
+/* ─── DATA-SAVER: skip hero video ────────────────────── */
+if (navigator.connection?.saveData) {
+  const v = document.querySelector('.hero-video video');
+  if (v) { v.removeAttribute('autoplay'); v.removeAttribute('preload'); v.src = ''; }
+}
+
+/* ─── NAV SCROLL STATE + ACTIVE LINK ─────────────────── */
+const nav   = document.getElementById('nav');
+const nlinks = document.querySelectorAll('.nav-link[href^="#"]');
+function onScroll(){
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+  const secs = [...nlinks].map(l=>document.querySelector(l.getAttribute('href'))).filter(Boolean);
+  let active = secs[0];
+  secs.forEach(s=>{ if(window.scrollY >= s.offsetTop - window.innerHeight*.4) active=s });
+  nlinks.forEach(l=>l.classList.toggle('active', l.getAttribute('href')==='#'+active?.id));
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+
+/* ─── MOBILE MENU ────────────────────────────────────── */
+const toggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+toggle.addEventListener('click', ()=>{
+  const open = navLinks.classList.toggle('open');
+  toggle.classList.toggle('open', open);
+  toggle.setAttribute('aria-expanded', String(open));
+  document.body.style.overflow = open ? 'hidden' : '';
+});
+navLinks.querySelectorAll('.nav-link').forEach(l=>l.addEventListener('click',()=>{
+  navLinks.classList.remove('open');
+  toggle.classList.remove('open');
+  toggle.setAttribute('aria-expanded','false');
+  document.body.style.overflow='';
+}));
+document.addEventListener('click', e=>{
+  if(!toggle.contains(e.target)&&!navLinks.contains(e.target)){
+    navLinks.classList.remove('open');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded','false');
+    document.body.style.overflow='';
+  }
+});
+
+/* ─── SMOOTH SCROLL ──────────────────────────────────── */
+const NAV_H = parseInt(getComputedStyle(html).getPropertyValue('--nav-h'))||52;
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click', e=>{
+  const t = document.getElementById(a.getAttribute('href').slice(1));
+  if(!t) return;
+  e.preventDefault();
+  window.scrollTo({top: t.getBoundingClientRect().top + window.scrollY - NAV_H, behavior:'smooth'});
+}));
+
+/* ─── REVEAL ON SCROLL ───────────────────────────────── */
+if(window.IntersectionObserver){
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target) } });
+  }, {threshold:.08, rootMargin:'0px 0px -24px 0px'});
+  document.querySelectorAll('.r').forEach(el=>io.observe(el));
+} else {
+  document.querySelectorAll('.r').forEach(el=>el.classList.add('in'));
+}
+
+/* ─── FOOTER COORD TICKER ────────────────────────────── */
+const loci = [
+  'chr1:1–248,956,422','chr7:117,120,016–117,308,718',
+  'chr17:43,044,295–43,125,483','chr13:32,315,086–32,400,266','chrX:31,094,932–33,339,609',
+];
+const footCoord = document.getElementById('foot-coord');
+let ci=0;
+setInterval(()=>{
+  ci=(ci+1)%loci.length;
+  footCoord.style.opacity='0';
+  setTimeout(()=>{ footCoord.textContent=loci[ci]; footCoord.style.opacity=''; }, 300);
+}, 4000);
+
+/* ─── ORCID PUBLICATIONS ─────────────────────────────── */
+(function(){
+  const ORCID   = '0009-0007-5163-0327';
+  const API     = `https://pub.orcid.org/v3.0/${ORCID}/works`;
+  const CACHE   = 'orcid_works_v1';
+  const container = document.getElementById('pub-list');
+  if (!container) return;
+
+  /* HTML-escape helper */
+  function esc(s){
+    return String(s ?? '').replace(/[&<>"']/g, c =>
+      ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  /* Human-readable type label */
+  function typeLabel(t){
+    return ({'journal-article':'Journal article','conference-paper':'Conference',
+             'book-chapter':'Book chapter','preprint':'Preprint',
+             'dissertation':'Dissertation','other':'Other'})[t]
+           ?? t.replace(/-/g,' ');
+  }
+
+  function render(data){
+    const works = (data.group ?? [])
+      .map(g => g['work-summary']?.[0])
+      .filter(Boolean)
+      .sort((a,b)=>{
+        const ya = +(a['publication-date']?.year?.value ?? 0);
+        const yb = +(b['publication-date']?.year?.value ?? 0);
+        return yb - ya;
+      });
+
+    if (!works.length){
+      container.innerHTML =
+        `<p class="pub-state">No works found. <a href="https://orcid.org/${ORCID}" target="_blank" rel="noopener">View ORCID profile ↗</a></p>`;
+      return;
+    }
+
+    const html = works.map(w => {
+      const title   = w.title?.title?.value ?? 'Untitled';
+      const year    = w['publication-date']?.year?.value ?? '';
+      const journal = w['journal-title']?.value ?? '';
+      const type    = w.type ?? '';
+      const doi     = (w['external-ids']?.['external-id'] ?? [])
+                        .find(x => x['external-id-type'] === 'doi')
+                        ?.['external-id-value'] ?? '';
+      const url     = w.url?.value ?? (doi ? `https://doi.org/${doi}` : '');
+
+      return `<article class="pub-row r in">
+        <p class="pub-year">${esc(year)}</p>
+        <div class="pub-body">
+          <h3 class="pub-title">${
+            url
+              ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer"
+                    style="color:inherit;text-decoration:none"
+                    onmouseover="this.style.color='var(--accent)'"
+                    onmouseout="this.style.color=''">${esc(title)}</a>`
+              : esc(title)
+          }</h3>
+          ${journal ? `<p class="pub-journal"><em>${esc(journal)}</em></p>` : ''}
+          <div class="pub-foot">
+            ${type ? `<span class="tag">${esc(typeLabel(type))}</span>` : ''}
+            ${doi   ? `<a href="https://doi.org/${esc(doi)}" target="_blank"
+                          rel="noopener noreferrer" class="pub-link">
+                         DOI: ${esc(doi)} ↗</a>` : ''}
+          </div>
+        </div>
+      </article>`;
+    }).join('');
+
+    container.innerHTML = html;
+  }
+
+  function showError(msg){
+    container.innerHTML =
+      `<p class="pub-state">
+         ${esc(msg)}
+         <a href="https://orcid.org/${ORCID}" target="_blank" rel="noopener">
+           View ORCID profile ↗</a>
+       </p>`;
+  }
+
+  async function load(){
+    /* session cache */
+    try {
+      const cached = sessionStorage.getItem(CACHE);
+      if (cached){ render(JSON.parse(cached)); return; }
+    } catch(_){}
+
+    /* loading skeleton already in HTML — just keep it while we fetch */
+    try {
+      const res = await fetch(API, { headers:{ Accept:'application/json' } });
+      if (!res.ok) throw new Error(`ORCID API returned ${res.status}`);
+      const data = await res.json();
+      try { sessionStorage.setItem(CACHE, JSON.stringify(data)); } catch(_){}
+      render(data);
+    } catch(err){
+      showError('Could not load from ORCID.');
+      console.warn('ORCID fetch failed:', err);
+    }
+  }
+
+  /* Lazy-load: trigger when section scrolls into view */
+  if (window.IntersectionObserver){
+    const io = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting){ io.disconnect(); load(); }
+    }, { rootMargin:'200px' });
+    const section = document.getElementById('publications');
+    if (section) io.observe(section); else load();
+  } else {
+    load();
+  }
+})();
+
+/* ─── GITHUB REPOS ───────────────────────────────────── */
+(function(){
+  const USER  = 'davide-scognamiglio';
+  const API   = `https://api.github.com/users/${USER}/repos?per_page=100&sort=updated`;
+  const CACHE = 'gh_repos_v1';
+  const slot  = document.getElementById('proj-api-slot');
+  if (!slot) return;
+
+  const LANG_DOT = {
+    Python:'ldot-py',Groovy:'ldot-nf',Nextflow:'ldot-nf',
+    JavaScript:'ldot-js',TypeScript:'ldot-js',
+    R:'ldot-r'
+  };
+
+  const GH_SVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>`;
+
+  const STAR_SVG = `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+
+  function esc(s){
+    return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function render(repos){
+    const filtered = repos
+      .filter(r => !r.fork && r.description && r.name !== 'test-datasets' && r.name !== 'MuSA')
+      .sort((a,b) => b.stargazers_count - a.stargazers_count || new Date(b.updated_at) - new Date(a.updated_at))
+      .slice(0, 5);
+
+    if (!filtered.length){ slot.innerHTML = ''; return; }
+
+    const html = filtered.map((r, i) => {
+      const dotCls   = LANG_DOT[r.language] ?? 'ldot-gen';
+      const langTxt  = r.language ?? 'Other';
+      const topics   = (r.topics ?? []).slice(0, 4);
+      const tags     = topics.length
+        ? topics.map(t => `<span class="tag">${esc(t)}</span>`).join('')
+        : (r.language ? `<span class="tag">${esc(r.language)}</span>` : '');
+      const stars    = r.stargazers_count > 0
+        ? `<span class="proj-stat">${STAR_SVG} ${r.stargazers_count}</span>` : '';
+
+      return `<div class="proj r in">
+        <div class="proj-meta">
+          <div class="proj-links-ext">
+            <a href="${esc(r.html_url)}" target="_blank" rel="noopener noreferrer" class="proj-link" aria-label="${esc(r.name)} on GitHub">${GH_SVG}</a>
+          </div>
+        </div>
+        <p class="proj-name">${esc(r.name)}</p>
+        <p class="proj-desc">${esc(r.description)}</p>
+        ${tags ? `<div class="proj-tech">${tags}</div>` : ''}
+        <div class="proj-foot">
+          ${stars}
+          <span class="proj-lang"><span class="ldot ${dotCls}" aria-hidden="true"></span>${esc(langTxt)}</span>
+        </div>
+      </div>`;
+    }).join('');
+
+    slot.innerHTML = html;
+  }
+
+  async function load(){
+    try {
+      const cached = sessionStorage.getItem(CACHE);
+      if (cached){ render(JSON.parse(cached)); return; }
+    } catch(_){}
+
+    try {
+      const res = await fetch(API, { headers:{ Accept:'application/vnd.github.mercy-preview+json' } });
+      if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+      const data = await res.json();
+      try { sessionStorage.setItem(CACHE, JSON.stringify(data)); } catch(_){}
+      render(data);
+    } catch(err){
+      slot.innerHTML = '';
+      console.warn('GitHub fetch failed:', err);
+    }
+  }
+
+  if (window.IntersectionObserver){
+    const io = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting){ io.disconnect(); load(); }
+    }, { rootMargin:'200px' });
+    const section = document.getElementById('projects');
+    if (section) io.observe(section); else load();
+  } else {
+    load();
+  }
+})();
+
+/* ─── ORCID EMPLOYMENT / EDUCATION ───────────────────── */
+(function(){
+  const ORCID = '0009-0007-5163-0327';
+  const CACHE = 'orcid_employment_v1';
+  const list  = document.getElementById('exp-list');
+  if (!list) return;
+
+  function esc(s){ return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function dateRange(start, end){
+    const sy = start?.year?.value;
+    if (!sy) return '—';
+    const ey = end?.year?.value;
+    if (!ey) return `${sy} — present`;
+    return sy === ey ? sy : `${sy} — ${ey}`;
+  }
+
+  function extractFrom(data, key){
+    return (data['affiliation-group'] ?? [])
+      .flatMap(g => g.summaries ?? [])
+      .map(s => s[key])
+      .filter(Boolean);
+  }
+
+  async function fetchJSON(url){
+    try {
+      const r = await fetch(url, { headers:{ Accept:'application/json' } });
+      return r.ok ? await r.json() : {};
+    } catch(_){ return {}; }
+  }
+
+  function render(entries){
+    if (!entries.length){
+      list.innerHTML = '<p style="color:var(--ink-3);font-size:.875rem;padding:1.75rem 0">No entries found on ORCID.</p>';
+      return;
+    }
+    list.innerHTML = entries.map(e => {
+      const role  = e['role-title'] ?? '';
+      const dept  = e['department-name'] ?? '';
+      const org   = e.organization?.name ?? '';
+      const city  = e.organization?.address?.city ?? '';
+      const ctry  = e.organization?.address?.country ?? '';
+      const loc   = [city, ctry].filter(Boolean).join(', ');
+      const orgLine = [org, loc].filter(Boolean).join(' · ');
+      const when  = dateRange(e['start-date'], e['end-date']);
+      return `<div class="tl-row r in">
+        <p class="tl-when">${esc(when)}</p>
+        <div>
+          ${role    ? `<p class="tl-role">${esc(role)}</p>` : ''}
+          ${orgLine ? `<p class="tl-org">${esc(orgLine)}</p>` : ''}
+          ${dept    ? `<div class="tl-tags"><span class="tag">${esc(dept)}</span></div>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function showError(){
+    list.innerHTML = `<p style="color:var(--ink-3);font-size:.875rem;padding:1.75rem 0">Could not load from ORCID. <a href="https://orcid.org/${ORCID}" target="_blank" rel="noopener" style="color:var(--accent)">View profile ↗</a></p>`;
+  }
+
+  async function load(){
+    try {
+      const cached = sessionStorage.getItem(CACHE);
+      if (cached){ render(JSON.parse(cached)); return; }
+    } catch(_){}
+
+    try {
+      const base = `https://pub.orcid.org/v3.0/${ORCID}`;
+      const [empData, eduData] = await Promise.all([
+        fetchJSON(`${base}/employments`),
+        fetchJSON(`${base}/educations`),
+      ]);
+      const entries = [
+        ...extractFrom(empData, 'employment-summary'),
+        ...extractFrom(eduData, 'education-summary'),
+      ].sort((a,b) => {
+        const ya = +(a['start-date']?.year?.value ?? 0);
+        const yb = +(b['start-date']?.year?.value ?? 0);
+        return yb - ya;
+      });
+      try { sessionStorage.setItem(CACHE, JSON.stringify(entries)); } catch(_){}
+      render(entries);
+    } catch(err){
+      showError();
+      console.warn('ORCID employment fetch failed:', err);
+    }
+  }
+
+  if (window.IntersectionObserver){
+    const io = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting){ io.disconnect(); load(); }
+    }, { rootMargin:'200px' });
+    const section = document.getElementById('experience');
+    if (section) io.observe(section); else load();
+  } else {
+    load();
+  }
+})();
+
+/* ─ scroll cue ─ */
+(function(){
+  const cue=document.querySelector('.hero-scroll-cue');
+  if(!cue)return;
+  window.addEventListener('scroll',function(){
+    if(window.scrollY>30)cue.style.display='none';
+  },{passive:true,once:true});
+})();
+</script>
+</body>
+</html>
