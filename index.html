@@ -250,21 +250,6 @@ h1.hero-h em{font-style:italic;font-weight:300;color:var(--accent)}
   display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;
   animation:fadeUp .55s var(--ease-out) .27s both;
 }
-.hero-meta{
-  margin-top:3rem;padding-top:1.75rem;
-  border-top:1px solid var(--line);
-  display:flex;gap:2rem;flex-wrap:wrap;
-  animation:fadeUp .55s var(--ease-out) .34s both;
-}
-.hero-meta-item{display:flex;flex-direction:column;gap:.15rem}
-.hero-meta-n{
-  font-size:1.375rem;font-weight:600;letter-spacing:-.03em;
-  line-height:1;color:var(--ink);
-}
-.hero-meta-l{
-  font-family:var(--fm);font-size:.6rem;font-weight:400;
-  letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);
-}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 /* ─── HERO SCROLL CUE ────────────────────────────────── */
@@ -440,8 +425,6 @@ h1.hero-h em{font-style:italic;font-weight:300;color:var(--accent)}
 }
 .pub-body{display:flex;flex-direction:column;gap:.35rem}
 .pub-title{font-size:.9375rem;font-weight:500;color:var(--ink);line-height:1.5}
-.pub-authors{font-family:var(--fm);font-size:.65rem;color:var(--ink-3);letter-spacing:.02em}
-.pub-authors strong{color:var(--accent)}
 .pub-journal{font-size:.8125rem;color:var(--ink-3);font-style:italic}
 .pub-foot{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem .4rem;margin-top:.15rem}
 .pub-link{
@@ -502,6 +485,8 @@ h1.hero-h em{font-style:italic;font-weight:300;color:var(--accent)}
 }
 .proj:hover{background:var(--bg-raised)}
 .proj:hover::after{opacity:1}
+.proj-filler{pointer-events:none}
+.proj-filler::after{display:none}
 .proj-meta{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem}
 .proj-links-ext{display:flex;gap:.25rem}
 .proj-link{
@@ -557,8 +542,6 @@ h1.hero-h em{font-style:italic;font-weight:300;color:var(--accent)}
 }
 .tl-role{font-size:.9375rem;font-weight:600;color:var(--ink);letter-spacing:-.01em;margin-bottom:.2rem}
 .tl-org{font-family:var(--fm);font-size:.65rem;color:var(--accent);letter-spacing:.03em;margin-bottom:.65rem}
-.tl-desc{font-size:.875rem;color:var(--ink-2);line-height:1.8;margin-bottom:.75rem}
-.tl-desc em{font-style:italic}
 .tl-tags{display:flex;flex-wrap:wrap;gap:.3rem}
 .tl-skel-bar{border-radius:3px;background:linear-gradient(90deg,var(--bg-float) 25%,var(--bg-raised) 50%,var(--bg-float) 75%);background-size:200% 100%;animation:shimmer 1.4s ease-in-out infinite}
 
@@ -643,7 +626,6 @@ footer{
   .nav-divider{display:none}
   #hero{padding-top:calc(var(--nav-h) + 3rem);padding-bottom:3.5rem}
   h1.hero-h{font-size:clamp(2.2rem,10vw,3.5rem)}
-  .hero-meta{gap:1.25rem}
   .projects-grid{grid-template-columns:1fr}
   .tl-row{grid-template-columns:1fr}
   .tl-when{margin-bottom:.35rem;padding-right:0}
@@ -651,9 +633,6 @@ footer{
   .hero-actions{flex-direction:column;align-items:flex-start}
   .foot-inner{flex-direction:column;align-items:flex-start;gap:.35rem}
   .hero-scroll-cue{display:none}
-}
-@media(max-width:440px){
-  .hero-meta{flex-direction:column;gap:.75rem}
 }
 @media(min-width:1400px){:root{--wrap:1200px}}
 
@@ -667,8 +646,9 @@ footer{
 /* ─── REDUCED MOTION ───────────────────────────────────── */
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
   .r{opacity:1;transform:none}
-  .hero-video video{display:none}
+  .hero-video{display:none}
 }
 @media(prefers-reduced-data:reduce){
   .hero-video video{display:none}
@@ -711,7 +691,7 @@ footer{
 <!-- ── HERO ────────────────────────────────────────────── -->
 <section id="hero" aria-label="Introduction">
   <div class="hero-video" aria-hidden="true">
-    <video autoplay loop muted playsinline preload="auto">
+    <video loop muted playsinline preload="none">
       <source src="assets/slow_video.mp4" type="video/mp4"/>
     </video>
   </div>
@@ -724,20 +704,20 @@ footer{
       </span>
     </div>
     <h1 class="hero-h">
-      You need a<br><em>data scientist.</em>
+      Genomes, sensors,<br><em>and the code between.</em>
     </h1>
     <p class="hero-body">
-      The bottleneck in modern research is making sense of the generated data.
-      Your growing mountain of raw files needs expert hands before they become findings and papers.
+      I build the pipelines that turn WGS and WES data into clinical answers for rare disease
+      diagnosis, and the signal models that pull objective gait biomarkers out of wearable sensors.
     </p>
     <p class="hero-intro">
-      I build the pipelines, tools, and analytical frameworks that close that gap —
-      reproducibly, rigorously, at scale. My work spans <strong>rare disease genomics</strong>
-      and <strong>inertial sensor analysis</strong>, with a thread of clinical data work running through both.
+      Bioinformatician at <strong>IRCCS Istituto Ortopedico Rizzoli</strong> and PhD candidate in
+      Data Science and Computation at the <strong>University of Bologna</strong>. Most recent work:
+      MuSA, a Nextflow pipeline for deep variant annotation, published in <em>BMC Bioinformatics</em>.
     </p>
     <div class="hero-actions">
-      <a href="#projects" class="btn btn-solid">See my work</a>
-      <a href="#contact"  class="btn btn-outline">Work together</a>
+      <a href="#research" class="btn btn-solid">See my work</a>
+      <a href="#contact"  class="btn btn-outline">Get in touch</a>
     </div>
   </div>
 </section>
@@ -968,13 +948,8 @@ footer{
         </a>
         <a href="https://orcid.org/0009-0007-5163-0327" target="_blank" rel="noopener noreferrer" class="contact-card">
           <div class="cc-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.516.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.016-5.325 5.016h-3.919V7.416zm1.444 1.303v7.444h2.297c2.359 0 3.881-1.303 3.881-3.722 0-2.066-1.303-3.722-3.881-3.722h-2.297z"/></svg></div>
-          <div class="cc-body"><span class="cc-label">ORCID</span><span class="cc-sub">0000-0000-0000-0000</span></div>
+          <div class="cc-body"><span class="cc-label">ORCID</span><span class="cc-sub">0009-0007-5163-0327</span></div>
           <svg class="cc-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </a>
-        <a href="assets/cv_davide_scognamiglio.pdf" download class="contact-card contact-card-cta">
-          <div class="cc-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-          <div class="cc-body"><span class="cc-label">Download CV</span><span class="cc-sub">PDF · Updated May 2026</span></div>
-          <svg class="cc-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         </a>
       </div>
     </div>
@@ -1024,11 +999,22 @@ window.addEventListener('scroll', () => {
   prog.style.transform = t > 0 ? `scaleX(${s/t})` : 'scaleX(0)';
 }, {passive:true});
 
-/* ─── DATA-SAVER: skip hero video ────────────────────── */
-if (navigator.connection?.saveData) {
-  const v = document.querySelector('.hero-video video');
-  if (v) { v.removeAttribute('autoplay'); v.removeAttribute('preload'); v.src = ''; }
-}
+/* ─── HERO VIDEO GATE ────────────────────────────────── */
+/* 6.4MB for a 9%-opacity texture. It ships preload="none" with no autoplay,
+   so nothing is fetched until this opts in. Small screens, save-data, and
+   reduced-motion drop the element instead. */
+(function(){
+  const wrap = document.querySelector('.hero-video');
+  const v = wrap?.querySelector('video');
+  if (!v) return;
+  const skip = window.matchMedia('(max-width: 768px)').matches
+            || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            || navigator.connection?.saveData;
+  if (skip) { wrap.remove(); return; }
+  v.preload = 'auto';
+  v.load();
+  v.play().catch(()=>{});
+})();
 
 /* ─── NAV SCROLL STATE + ACTIVE LINK ─────────────────── */
 const nav   = document.getElementById('nav');
@@ -1036,9 +1022,10 @@ const nlinks = document.querySelectorAll('.nav-link[href^="#"]');
 function onScroll(){
   nav.classList.toggle('scrolled', window.scrollY > 20);
   const secs = [...nlinks].map(l=>document.querySelector(l.getAttribute('href'))).filter(Boolean);
-  let active = secs[0];
+  /* Hero has no nav link, so nothing is active until the first real section. */
+  let active = null;
   secs.forEach(s=>{ if(window.scrollY >= s.offsetTop - window.innerHeight*.4) active=s });
-  nlinks.forEach(l=>l.classList.toggle('active', l.getAttribute('href')==='#'+active?.id));
+  nlinks.forEach(l=>l.classList.toggle('active', !!active && l.getAttribute('href')==='#'+active.id));
 }
 window.addEventListener('scroll', onScroll, {passive:true});
 onScroll();
@@ -1069,11 +1056,15 @@ document.addEventListener('click', e=>{
 
 /* ─── SMOOTH SCROLL ──────────────────────────────────── */
 const NAV_H = parseInt(getComputedStyle(html).getPropertyValue('--nav-h'))||52;
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)');
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click', e=>{
   const t = document.getElementById(a.getAttribute('href').slice(1));
   if(!t) return;
   e.preventDefault();
-  window.scrollTo({top: t.getBoundingClientRect().top + window.scrollY - NAV_H, behavior:'smooth'});
+  window.scrollTo({
+    top: t.getBoundingClientRect().top + window.scrollY - NAV_H,
+    behavior: REDUCED.matches ? 'auto' : 'smooth'
+  });
 }));
 
 /* ─── REVEAL ON SCROLL ───────────────────────────────── */
@@ -1219,7 +1210,24 @@ setInterval(()=>{
   const API   = `https://api.github.com/users/${USER}/repos?per_page=100&sort=updated`;
   const CACHE = 'gh_repos_v1';
   const slot  = document.getElementById('proj-api-slot');
+  const grid  = document.getElementById('proj-grid');
   if (!slot) return;
+
+  /* The grid paints its 1px rules by showing a --line background through the
+     gap. Any cell the cards don't cover exposes that background as a solid
+     block, so an odd cell count must be padded to even. The API cards live
+     inside a display:contents slot, so they are not DOM siblings of the
+     static card and :nth-child cannot see across the two. */
+  function balanceGrid(){
+    if (!grid) return;
+    grid.querySelectorAll('.proj-filler').forEach(f => f.remove());
+    if (grid.querySelectorAll('.proj, .proj-skel').length % 2){
+      const filler = document.createElement('div');
+      filler.className = 'proj proj-filler';
+      filler.setAttribute('aria-hidden', 'true');
+      grid.appendChild(filler);
+    }
+  }
 
   const LANG_DOT = {
     Python:'ldot-py',Groovy:'ldot-nf',Nextflow:'ldot-nf',
@@ -1241,7 +1249,7 @@ setInterval(()=>{
       .sort((a,b) => b.stargazers_count - a.stargazers_count || new Date(b.updated_at) - new Date(a.updated_at))
       .slice(0, 5);
 
-    if (!filtered.length){ slot.innerHTML = ''; return; }
+    if (!filtered.length){ slot.innerHTML = ''; balanceGrid(); return; }
 
     const html = filtered.map((r, i) => {
       const dotCls   = LANG_DOT[r.language] ?? 'ldot-gen';
@@ -1270,6 +1278,7 @@ setInterval(()=>{
     }).join('');
 
     slot.innerHTML = html;
+    balanceGrid();
   }
 
   async function load(){
@@ -1286,6 +1295,7 @@ setInterval(()=>{
       render(data);
     } catch(err){
       slot.innerHTML = '';
+      balanceGrid();
       console.warn('GitHub fetch failed:', err);
     }
   }
@@ -1312,7 +1322,8 @@ setInterval(()=>{
 
   function dateRange(start, end){
     const sy = start?.year?.value;
-    if (!sy) return '—';
+    /* ORCID entries can carry no start date; a bare dash reads as broken. */
+    if (!sy) return '';
     const ey = end?.year?.value;
     if (!ey) return `${sy} — present`;
     return sy === ey ? sy : `${sy} — ${ey}`;
