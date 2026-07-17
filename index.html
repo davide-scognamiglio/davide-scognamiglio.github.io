@@ -251,19 +251,6 @@ h1.hero-h em{font-style:italic;font-weight:300;color:var(--accent)}
 }
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-/* ─── HERO SCROLL CUE ────────────────────────────────── */
-.hero-scroll-cue{
-  position:fixed;bottom:2.5rem;left:50%;translate:-50% 0;
-  width:1px;height:44px;pointer-events:none;overflow:hidden;z-index:2;
-}
-.hero-scroll-cue::before{
-  content:'';display:block;width:100%;height:100%;
-  background:linear-gradient(to bottom,var(--ink-3) 0%,transparent 100%);
-  transform:translateY(-100%);
-  animation:scroll-cue-in .5s var(--ease-out) 2s forwards;
-}
-@keyframes scroll-cue-in{to{transform:translateY(0)}}
-
 /* ════════════════════════════════════════════════════════
    ABOUT
 ════════════════════════════════════════════════════════ */
@@ -570,7 +557,6 @@ footer{
   .about-sidebar{grid-template-columns:1fr}
   .hero-actions{flex-direction:column;align-items:flex-start}
   .foot-inner{flex-direction:column;align-items:flex-start;gap:.35rem}
-  .hero-scroll-cue{display:none}
 }
 @media(min-width:1400px){:root{--wrap:1200px}}
 
@@ -659,7 +645,6 @@ footer{
     </div>
   </div>
 </section>
-<div class="hero-scroll-cue" aria-hidden="true"></div>
 
 <!-- ── ABOUT ────────────────────────────────────────────── -->
 <section id="about" class="tinted">
@@ -1350,14 +1335,6 @@ setInterval(()=>{
   }
 })();
 
-/* ─ scroll cue ─ */
-(function(){
-  const cue=document.querySelector('.hero-scroll-cue');
-  if(!cue)return;
-  window.addEventListener('scroll',function(){
-    if(window.scrollY>30)cue.style.display='none';
-  },{passive:true,once:true});
-})();
 </script>
 </body>
 </html>
