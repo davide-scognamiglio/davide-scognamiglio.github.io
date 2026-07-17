@@ -625,7 +625,8 @@ footer{
   .nav-toggle{display:flex}
   .nav-divider{display:none}
   #hero{padding-top:calc(var(--nav-h) + 3rem);padding-bottom:3.5rem}
-  h1.hero-h{font-size:clamp(2.2rem,10vw,3.5rem)}
+  /* "bioinformatician." is 16 chars and cannot break; keep it inside 320px. */
+  h1.hero-h{font-size:clamp(1.9rem,8.5vw,3.5rem)}
   .projects-grid{grid-template-columns:1fr}
   .tl-row{grid-template-columns:1fr}
   .tl-when{margin-bottom:.35rem;padding-right:0}
@@ -704,16 +705,16 @@ footer{
       </span>
     </div>
     <h1 class="hero-h">
-      Genomes, sensors,<br><em>and the code between.</em>
+      You need a<br><em>bioinformatician.</em>
     </h1>
     <p class="hero-body">
-      I build the pipelines that turn WGS and WES data into clinical answers for rare disease
-      diagnosis, and the signal models that pull objective gait biomarkers out of wearable sensors.
+      Sequencing is the easy part. Turning WGS and WES output into a ranked, interpretable
+      answer a clinician can act on takes pipelines that are reproducible, documented, and
+      built to be re-run.
     </p>
     <p class="hero-intro">
-      Bioinformatician at <strong>IRCCS Istituto Ortopedico Rizzoli</strong> and PhD candidate in
-      Data Science and Computation at the <strong>University of Bologna</strong>. Most recent work:
-      MuSA, a Nextflow pipeline for deep variant annotation, published in <em>BMC Bioinformatics</em>.
+      I'm a bioinformatician at <strong>IRCCS Istituto Ortopedico Rizzoli</strong> and a PhD
+      candidate in Data Science and Computation at the <strong>University of Bologna</strong>.
     </p>
     <div class="hero-actions">
       <a href="#research" class="btn btn-solid">See my work</a>
@@ -844,7 +845,7 @@ footer{
 <!-- ── PUBLICATIONS ──────────────────────────────────────── -->
 <section id="publications" class="tinted">
   <div class="wrap">
-    <h2 class="section-heading r">Published work.</h2>
+    <h2 class="section-heading r">Latest articles.</h2>
     <div id="pub-list" class="pub-list" aria-live="polite" aria-label="Publications list">
       <!-- populated by JS from ORCID API -->
       <div class="pub-skeleton">
@@ -855,7 +856,7 @@ footer{
     </div>
     <div class="pub-more r">
       <a href="https://orcid.org/0009-0007-5163-0327" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
-        View profile on ORCID
+        See all published work on ORCID
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
       </a>
     </div>
@@ -1095,6 +1096,7 @@ setInterval(()=>{
   const ORCID   = '0009-0007-5163-0327';
   const API     = `https://pub.orcid.org/v3.0/${ORCID}/works`;
   const CACHE   = 'orcid_works_v1';
+  const MAX     = 5;   /* newest N only; the rest live behind the ORCID link */
   const container = document.getElementById('pub-list');
   if (!container) return;
 
@@ -1120,7 +1122,8 @@ setInterval(()=>{
         const ya = +(a['publication-date']?.year?.value ?? 0);
         const yb = +(b['publication-date']?.year?.value ?? 0);
         return yb - ya;
-      });
+      })
+      .slice(0, MAX);
 
     if (!works.length){
       container.innerHTML =
