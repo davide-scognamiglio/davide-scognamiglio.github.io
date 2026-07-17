@@ -195,7 +195,6 @@ h2.section-heading em{font-style:italic;font-weight:300;color:var(--ink-2)}
   width:100%;height:100%;
   object-fit:cover;
   opacity:.09;
-  will-change:transform;
 }
 .hero-inner{
   position:relative;z-index:1;
@@ -264,68 +263,6 @@ h1.hero-h em{font-style:italic;font-weight:300;color:var(--accent)}
   animation:scroll-cue-in .5s var(--ease-out) 2s forwards;
 }
 @keyframes scroll-cue-in{to{transform:translateY(0)}}
-
-/* ─── SCROLL-DRIVEN PARALLAX HERO ────────────────────── */
-@supports(animation-timeline:scroll()){
-  @media(min-width:769px){
-    #hero{
-      min-height:140svh;display:block;align-items:initial;
-      padding-top:calc(var(--nav-h) + 4rem);padding-bottom:0;
-      overflow:visible;clip-path:inset(0);
-    }
-    .hero-inner{
-      position:sticky;top:calc(var(--nav-h) + 4rem);
-      padding-bottom:5rem;
-    }
-    @keyframes hero-vid-parallax{
-      from{transform:scale(1) translateY(0)}
-      to  {transform:scale(1.1) translateY(-5%)}
-    }
-    .hero-video{
-      animation:hero-vid-parallax linear both;
-      animation-timeline:scroll(root);
-      animation-range:0px 140svh;
-      will-change:transform;
-    }
-    @keyframes hero-layer-exit{
-      from{opacity:1;transform:translateY(0)}
-      to  {opacity:0;transform:translateY(-44px)}
-    }
-    .hero-byline{
-      animation:fadeUp .55s var(--ease-out) both,hero-layer-exit linear forwards;
-      animation-timeline:auto,scroll(root);
-      animation-range:auto,78svh 114svh;
-    }
-    .hero-actions{
-      animation:fadeUp .55s var(--ease-out) .27s both,hero-layer-exit linear forwards;
-      animation-timeline:auto,scroll(root);
-      animation-range:auto,80svh 116svh;
-    }
-    .hero-body{
-      animation:fadeUp .55s var(--ease-out) .14s both,hero-layer-exit linear forwards;
-      animation-timeline:auto,scroll(root);
-      animation-range:auto,84svh 122svh;
-    }
-    .hero-intro{
-      animation:fadeUp .55s var(--ease-out) .2s both,hero-layer-exit linear forwards;
-      animation-timeline:auto,scroll(root);
-      animation-range:auto,86svh 124svh;
-    }
-    h1.hero-h{
-      animation:fadeUp .6s var(--ease-out) .07s both,hero-layer-exit linear forwards;
-      animation-timeline:auto,scroll(root);
-      animation-range:auto,92svh 132svh;
-    }
-  }
-  @media(prefers-reduced-motion:reduce){
-    #hero{min-height:100svh!important;display:flex!important;align-items:center!important;padding-top:calc(var(--nav-h) + 5rem)!important;padding-bottom:5rem!important}
-    .hero-inner{position:relative!important;top:auto!important;padding-bottom:0!important}
-    .hero-video{animation:none!important}
-    .hero-byline,.hero-actions,.hero-body,.hero-intro{animation:none!important;opacity:1!important}
-    h1.hero-h{animation:none!important;opacity:1!important}
-    .hero-scroll-cue{display:none!important}
-  }
-}
 
 /* ════════════════════════════════════════════════════════
    ABOUT
