@@ -409,6 +409,13 @@ h1.hero-h em{font-style:italic;font-weight:300;color:var(--accent)}
 }
 .proj:hover{background:var(--bg-raised)}
 .proj:hover::after{opacity:1}
+/* Whole card clickable: the title link stretches over the card; icon links sit above it. */
+.proj-card-link{color:inherit;text-decoration:none}
+.proj-card-link::before{content:'';position:absolute;inset:0;z-index:1}
+.proj-card-link:focus-visible{outline:none}
+.proj:has(.proj-card-link){cursor:pointer}
+.proj:has(.proj-card-link:focus-visible){outline:2px solid var(--accent);outline-offset:-2px}
+.proj-links-ext .proj-link{position:relative;z-index:2}
 .proj-filler{pointer-events:none}
 .proj-filler::after{display:none}
 .proj-meta{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem}
@@ -730,8 +737,8 @@ footer{
         <p class="research-track">Genomics</p>
         <div class="research-content">
           <h3>Rare Disease Genomics</h3>
-          <p>End-to-end variant annotation and clinical prioritisation for Mendelian disorders. Core output: MuSA, an nf-core–compliant Nextflow pipeline integrating VEP (22 plugins), ANNOVAR, dbNSFP, RENOVO, and automated ACMG/AMP classification. Produces 920-column MAF files and interactive HTML reports for clinical review.</p>
-          <div class="research-tags"><span class="tag">WGS / WES</span><span class="tag">Nextflow</span><span class="tag">ACMG/AMP</span><span class="tag">nf-core</span></div>
+          <p>End-to-end variant annotation and clinical prioritisation for Mendelian disorders. Core output: MuSA, a Nextflow pipeline for deep germline annotation: Ensembl VEP with up to 32 plugins, ClinVar, ClinGen, offline HPO matching, dbNSFP and RENOVO 1.5, with optional ACMG/AMP scoring through GeneBe. Produces MAF files of up to 887 columns and interactive HTML reports for clinical review.</p>
+          <div class="research-tags"><span class="tag">WGS / WES</span><span class="tag">Nextflow</span><span class="tag">ACMG/AMP</span><span class="tag">HPO</span></div>
         </div>
       </div>
       <div class="research-row r">
@@ -789,9 +796,9 @@ footer{
             </a>
           </div>
         </div>
-        <p class="proj-name">MuSA</p>
+        <p class="proj-name"><a class="proj-card-link" href="https://davide-scognamiglio.github.io/MuSA/">MuSA</a></p>
         <p class="proj-sub">Multi-Source variant Annotation</p>
-        <p class="proj-desc">nf-core–compliant Nextflow pipeline for deep variant annotation and clinical ranking. Integrates VEP (22 plugins), ANNOVAR, native dbNSFP, RENOVO scoring, and automated ACMG/AMP classification via GeneBe. Produces up to 920-column MAF files and interactive HTML reports with HPO-matched gene panel filtering. Published in <em>BMC Bioinformatics</em> 2026.</p>
+        <p class="proj-desc">Nextflow pipeline for deep germline variant annotation and clinical ranking. Basic mode (Ensembl VEP, ClinVar, ClinGen, offline HPO matching) needs no registration; extended mode adds dbNSFP, 32 VEP plugins and RENOVO 1.5. Produces MAF files of up to 887 columns and interactive HTML reports with HPO-matched gene panels. Published in <em>BMC Bioinformatics</em> 2026.</p>
         <div class="proj-tech"><span class="tag">Nextflow DSL2</span><span class="tag">VEP</span><span class="tag">dbNSFP</span><span class="tag">RENOVO</span><span class="tag">Docker</span></div>
         <div class="proj-foot">
           <span class="proj-lang"><span class="ldot ldot-py" aria-hidden="true"></span>Python / Nextflow</span>
